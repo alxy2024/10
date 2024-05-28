@@ -1,0 +1,51 @@
+screen.fill(0)
+screen.blit(GAME_BACKGROUND, (0, 0))
+
+# Drawing player plane
+if not OPPONENT.is_hit:
+screen.blit(OPPONENT.image[OPPONENT.img_index], OPPONENT.rect)
+# Change the image index to make the aircraft animated
+OPPONENT.img_index = SHOOT_DISTANCE // 8
+else:
+OPPONENT.img_index = OPPONENT_DOWN_INDEX // 8
+screen.blit(OPPONENT.image[OPPONENT.img_index], OPPONENT.rect)
+OPPONENT_DOWN_INDEX += 1
+if OPPONENT_DOWN_INDEX > 47:
+RUNNING = False
+
+# Draw an wreck animation
+for CHALLENGERS_DOWN in CHALLENGER_DOWN:
+if CHALLENGERS_DOWN.down_index == 0:
+OPPONENT1_DOWN_SOUNDTEST.play()
+if CHALLENGERS_DOWN.down_index > 7:
+CHALLENGER_DOWN.remove(CHALLENGERS_DOWN)
+SCORE += 1000
+continue
+screen.blit(CHALLENGERS_DOWN.down_imgs[CHALLENGERS_DOWN.down_index // 2], CHALLENGERS_DOWN.rect)
+CHALLENGERS_DOWN.down_index += 1
+
+# Drawing bullets and opponents planes
+OPPONENT.bullets.draw(screen)
+CHALLENGER1.draw(screen)
+
+# Draw a score
+SCORE_FONT = pygame.font.Font(None, 36)
+SCORE_TXT = SCORE_FONT.render(str(SCORE), True, (255, 255, 0))
+TXT_AIRCRAFT = SCORE_TXT.get_rect()
+TXT_AIRCRAFT.topleft = [10, 10]
+screen.blit(SCORE_TXT, TXT_AIRCRAFT)
+
+In the code above, which is for the drawing background, drawing a player plane, drawing for wrick animation, drawing for bullets and enemy planes, and drawing for a score. (Aircraft War Game in Python).
+
+Function for the Shortcut of Keyboard
+KEY_PRESSED_ENTER = pygame.key.get_pressed()
+# Invalid if the player is hit
+if not OPPONENT.is_hit:
+if KEY_PRESSED_ENTER[K_r] or KEY_PRESSED_ENTER[K_UP]:
+OPPONENT.moveUp()
+if KEY_PRESSED_ENTER[K_f] or KEY_PRESSED_ENTER[K_DOWN]:
+OPPONENT.moveDown()
+if KEY_PRESSED_ENTER[K_d] or KEY_PRESSED_ENTER[K_LEFT]:
+OPPONENT.moveLeft()
+if KEY_PRESSED_ENTER[K_g] or KEY_PRESSED_ENTER[K_RIGHT]:
+OPPONENT.moveRight()
